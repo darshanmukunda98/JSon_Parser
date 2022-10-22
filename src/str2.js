@@ -44,4 +44,5 @@ function stringParser (str) {
 function isHex (s) {
   return /[0-9a-fA-F]{4}/.test(s)
 }
-console.log(stringParser(process.argv[2]))
+
+module.exports = { stringParser }
