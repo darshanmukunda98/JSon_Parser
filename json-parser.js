@@ -2,27 +2,27 @@
 function objectParser (input) {
   if (!input[0] === '{') return null
   const obj = {}
-  let strBuff // rename to key
-  let valBuff // rename to value
+  let key // rename to key
+  let value // rename to value
 
   // if (input.length > 1)
   input = input.slice(1).trim()
   if (input[0] === '}') return [obj, input.slice(1).trim()]
   do {
-    strBuff = stringParser(input)
+    key = stringParser(input)
     // if (strBuff === null) return null
-    if (!strBuff) return null
-    input = strBuff[1]
-    if (input[0] === ':') {
-      input = input.slice(1).trim()
-    } else {
+    if (!key) return null
+    input = key[1]
+    if (input[0] !== ':') {
       return null // add to beginning of the cond
+    } else {
+      input = input.slice(1).trim()
     }
-    valBuff = valueParser(input)
+    value = valueParser(input)
     // if (valBuff === null) return null
-    if (!valBuff) return null // add instead ' === null'
-    input = valBuff[1]
-    obj[strBuff[0]] = valBuff[0]
+    if (!value) return null // add instead ' === null'
+    input = value[1]
+    obj[key[0]] = value[0]
     if (input[0] === '}') { return [obj, input.slice(1).trim()] }
     if (input[0] === ',') {
       input = input.slice(1).trim()
