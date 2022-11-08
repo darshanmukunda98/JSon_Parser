@@ -157,7 +157,10 @@ function valueParser (input) {
     'fail11', 'fail12', 'fail13', 'fail14', 'fail15', 'fail16', 'fail17', 'fail18', 'fail19', 'fail20', 'fail21',
     'fail22', 'fail23', 'fail24', 'fail25', 'fail26', 'fail27', 'fail28', 'fail29', 'fail30', 'fail31', 'fail32', 'fail33']
   // const fileName = process.argv[2]
-  files.forEach(fileName =>
+  let passCounter = 0
+  let pcount = 0
+
+  files.forEach((fileName, _, array) =>
     fs.readFile('./test/' + fileName + '.json', 'utf8', (error, data) => {
       if (error) {
         console.log(error)
@@ -166,9 +169,21 @@ function valueParser (input) {
       let buffer = null
       if (data.startsWith('[') || data.startsWith('{')) { buffer = valueParser(data) }
       // if (typeof (data) === 'string') buffer = null
-      if (buffer) { if (buffer[1] === '') { /* console.log(buffer); */ console.log(fileName + '====> PASS' + '\n'); return } }
-      console.log(fileName + '====> FAIL ')
-      // console.log(buffer)
-      console.log()
+      if (buffer) {
+        if (buffer[1] === '') {
+          /* console.log(buffer); */
+          console.log(fileName + '====> PASS' + '\n')
+          passCounter++
+          pcount++
+          return
+        }
+      }
+      console.log(fileName + '====> FAIL \n')
+
+      pcount++
+      if (pcount === array.length) {
+        console.log('Passed: ', passCounter)
+        console.log('Failed', files.length - passCounter)
+      }
     }))
 })()
